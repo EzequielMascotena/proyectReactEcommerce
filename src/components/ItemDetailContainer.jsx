@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
+import { getFirestore, getDoc, doc } from "firebase/firestore";
 
-import { products } from '../data/products';
 import { ItemDetail } from './ItemDetail';
 
 export const ItemDetailContainer = () => {
@@ -10,21 +10,14 @@ export const ItemDetailContainer = () => {
 
     const { id } = useParams();
 
-    useEffect(() => {
-        const mypromise = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(products);
-            }, 2000);
-        });
 
-        mypromise.then((response) => {
-            const findById = response.find(
-                (item) => item.id === Number(id)
-            );
-            setItem(findById);
-        })
-        .catch((error) => {
-            console.error("Error al cargar los productos:", error);
+    useEffect(() => {
+        const db = getFirestore();
+
+        const refDoc = doc(db, "items", id);
+
+        getDoc(refDoc).then((snapshot) => {
+            setItem({ id: snapshot.id, ...snapshot.data() });
         });
     }, [id]);
 

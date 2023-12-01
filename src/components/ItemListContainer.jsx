@@ -1,9 +1,11 @@
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import Container from 'react-bootstrap/Container';
 
-import { products } from '../data/products';
+import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
+
 import { ItemList } from './ItemList';
+
 
 export const ItemListContainer = () => {
     const [items, setItems] = useState([]);
@@ -11,24 +13,20 @@ export const ItemListContainer = () => {
     const { id } = useParams();
 
     useEffect(() => {
-        const mypromise = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(products);
-            }, 2000);
-        });
+        const db = getFirestore();
 
-        mypromise.then((response) => {
-            if (!id) {
-                setItems(response);
-            } else {
-                const filterByCategory = response.filter(
-                    (item) => item.category === id
+        const refCollection = !id
+            ? collection(db, "items")
+            : query (collection(db, "items"), where("categoryId", "==", id));
+
+        getDocs(refCollection).then((snapshot) => {
+            if (snapshot.size === 0) console.log("no results");
+            else
+                setItems(
+                    snapshot.docs.map((doc) => {
+                        return { id: doc.id, ...doc.data() };
+                    })
                 );
-                setItems(filterByCategory);
-            }
-        })
-        .catch((error) => {
-            console.error("Error al cargar los productos:", error);
         });
     }, [id]);
 
