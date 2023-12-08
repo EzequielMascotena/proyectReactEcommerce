@@ -14,12 +14,11 @@ export const Item = ({ item }) => {
                 className="mb-2"
             >
                 <Card.Img variant="top" src={item.pictureUrl}  alt={item.alt} height="230px"/>
-                <Card.Body>
-                    
+                <Card.Body className="d-flex flex-row justify-content-evenly">
                     <Card.Title>{item.title}</Card.Title>
                     <Card.Text className='fs-4'> ${item.price}.- </Card.Text>
                 </Card.Body>
-                <Link className='mb-2 ms-2' to={`/items/${item.id}`}>
+                <Link className='mb-2 ms-2 text-center align-middle' to={`/items/${item.id}`}>
                         <Button variant="dark">Mas detalles</Button>
                 </Link>
             </Card>

@@ -1,11 +1,16 @@
+import { Container } from "react-bootstrap";
 import { Item } from "./Item"
 
 export const ItemList = ({ items }) => {
     return (
-        <div className="d-flex flex-row justify-content-center gap-3">
-            {items.map((item) => (
-                <Item key={item.id} item={item} />
-            ))}
-        </div>
+        <Container className="d-flex justify-content-center">
+            <div className="row row-cols-1 row-cols-md-3 g-4">
+                {items.map((item) => (
+                    <div key={item.id} className="col">
+                        <Item item={item} />
+                    </div>
+                ))}
+            </div>
+        </Container>
     );
 };

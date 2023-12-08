@@ -1,33 +1,35 @@
 import { useContext } from 'react';
 
-import Card from 'react-bootstrap/Card';
-import Badge from 'react-bootstrap/Badge';
+import { Container, Card, Badge } from 'react-bootstrap';
+
 import { ItemCounter } from './ItemCounter';
 import { CartContext } from '../contexts/CartContext';
 
 export const ItemDetail = ({ item }) => {
     const {onAdd} = useContext(CartContext);
 
-    const add = () => {
-        onAdd(item);
+    const add = (quantity) => {
+        onAdd(item, quantity);
     };
 
     return (
-        <>
-            <h1>{item.title}</h1>
+        <Container className='mt-3'>
+            <div className="d-flex flex-row justify-content-between mb-2">
+                <h1 className='fw-bold'>{item.title}</h1>
+                <Badge className='fs-3' bg="dark">${item.price}.-</Badge>
+                <Badge className='fs-3' bg="dark">Stock:{item.stock}</Badge>
+            </div>
+            
             <Card>
                 <Card.Img variant="top" src={item.pictureUrl} alt={item.alt} />
                 <Card.Body>
                     <Card.Text className='fs-3'>
-                        Descripcion: {item.description}.
+                        {item.description}
                     </Card.Text>
-                    <h2>
-                        <Badge bg="dark">${item.price}.-</Badge>
-                    </h2>
-                    <ItemCounter onAdd={add} />
+                    <ItemCounter onAdd={add} stock={item.stock} initial={1} />
                 </Card.Body>
             </Card>
-        </>
+        </Container>
     );
 };
 
