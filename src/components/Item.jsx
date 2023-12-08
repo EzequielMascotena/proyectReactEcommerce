@@ -10,10 +10,10 @@ export const Item = ({ item }) => {
                 bg={variant.toLowerCase()}
                 key={variant}
                 text={variant.toLowerCase() === 'light' ? 'dark' : 'white'}
-                style={{ width: '18rem' }}
+                style={{ width: '25rem' }}
                 className="mb-2"
             >
-                <Card.Img variant="top" src={item.pictureUrl}  alt={item.alt} height="230px"/>
+                <Card.Img variant="top" src={item.pictureUrl}  alt={item.alt}/>
                 <Card.Body className="d-flex flex-row justify-content-evenly">
                     <Card.Title>{item.title}</Card.Title>
                     <Card.Text className='fs-4'> ${item.price}.- </Card.Text>

@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 
 import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";

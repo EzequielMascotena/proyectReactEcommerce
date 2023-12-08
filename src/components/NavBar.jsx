@@ -14,6 +14,7 @@ export const NavBar = () => {
                 <Nav className="me-auto">
                     <NavLink to="category/granBretaña" className="nav-link active text-warning p-3 fs-3">Gran Bretaña</NavLink>
                     <NavLink to="category/norteAmerica" className="nav-link text-warning p-3 fs-3">Norte América</NavLink>
+                    <NavLink to="category/alemania" className="nav-link text-warning p-3 fs-3">Alemania</NavLink>
                 </Nav>
                 <div className="nav-link text-warning p-3 fs-4" href="#">
                     <CartWidget />

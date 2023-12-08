@@ -1,9 +1,11 @@
 import { useState, useContext } from 'react';
-import { Container, Button, Form } from 'react-bootstrap';
-import { getFirestore, collection, addDoc, serverTimestamp  } from 'firebase/firestore';
+import { Container, Button, Form, Alert, Modal } from 'react-bootstrap';
+import { getFirestore, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 import { CartContext } from "../contexts/CartContext";
 import { useNavigate } from "react-router-dom";
+
+import Brewmaster from "../assets/brewmaster.png";
 
 const initialValues = {
     name: "",
@@ -15,6 +17,13 @@ const initialValues = {
 export const CheckOut = () => {
     const { clear, items, total, setTotal } = useContext(CartContext);
     const [buyer, setBuyer] = useState(initialValues);
+
+    const [error, setError] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+
+    const [orderId, setOrderId] = useState(null);
+    const [orderTotal, setOrderTotal] = useState(null);
+
     const navigate = useNavigate();
 
     const handleChange = (event) => {
@@ -25,6 +34,11 @@ export const CheckOut = () => {
             }
         });
     };
+
+    const handleModalClose = () => {
+        setShowModal(false);
+        navigate("/");
+    }
 
     const sendOrder = () => {
         if (validateForm()) {
@@ -40,12 +54,12 @@ export const CheckOut = () => {
 
             addDoc(orderCollection, order).then(({ id }) => {
                 if (id) {
-                    alert(`Su orden: ${id} ha sido completada!
-                    El total a pagar es de $${total}.-
-                    Muchas gracias por su compra!!`);
+                    setShowModal(true);
                     setBuyer(initialValues);
-                    setTotal (0);
+                    setTotal(0);
                     clear();
+                    setOrderId(id);
+                    setOrderTotal(total);
                 }
             });
         }
@@ -55,10 +69,11 @@ export const CheckOut = () => {
         const { email, emailConfirm } = buyer;
 
         if (email !== emailConfirm) {
-            alert("Los campos de correo electrónico no coinciden.");
+            setError("Los campos de correo electrónico no coinciden.");
             return false;
         }
 
+        setError(null);
         return true;
     };
 
@@ -68,8 +83,8 @@ export const CheckOut = () => {
     };
 
     return (
-        <Container className="d-flex justify-content-start mt-4 fs-5">
-            <Form>
+        <Container className="d-flex justify-content-between mt-4 fs-5">
+            <Form className='bg-dark-subtle p-4 ms-5'>
                 <Form.Group className="mb-3">
                     <Form.Label>Nombre Completo</Form.Label>
                     <Form.Control
@@ -110,13 +125,27 @@ export const CheckOut = () => {
                         name="emailConfirm"
                     />
                 </Form.Group>
+                {error && <Alert key="danger" variant="danger">{error}</Alert>}
                 <div className="d-flex justify-content-start gap-5 mt-3">
                     <Button variant="dark" onClick={() => navigate("/Cart")} >Atras</Button>
                     <Button variant="dark" onClick={sendOrder} disabled={isBuyButtonDisabled()}>
-                        Comprar
+                        Finalizar Compra
                     </Button>
                 </div>
             </Form>
+            <img src={Brewmaster} alt="imagen maestro cervecero" height="450px" className='ms-5' />
+
+            <Modal show={showModal} onHide={handleModalClose}>
+                <Modal.Header>
+                    <Modal.Title>Muchas gracias por su compra!!</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Su orden: {orderId} ha sido completada! <hr />El total a pagar es de ${orderTotal}.</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleModalClose}>
+                        Cerrar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Container>
     );
 };

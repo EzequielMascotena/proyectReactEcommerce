@@ -7,22 +7,40 @@ import { ItemDetail } from './ItemDetail';
 
 export const ItemDetailContainer = () => {
     const [item, setItem] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const { id } = useParams();
 
 
     useEffect(() => {
-        const db = getFirestore();
+        const fetchItem = async () => {
+            const db = getFirestore();
+            const itemRef = doc(db, 'items', id);
 
-        const refDoc = doc(db, "items", id);
+            try {
+                const snapshot = await getDoc(itemRef);
 
-        getDoc(refDoc).then((snapshot) => {
-            setItem({ id: snapshot.id, ...snapshot.data() });
-        });
+                if (snapshot.exists()) {
+                    setItem({ id: snapshot.id, ...snapshot.data() });
+                } else {
+                    setError('El artículo no existe.');
+                }
+            } catch (error) {
+                setError('Error al cargar el artículo. Inténtelo de nuevo más tarde.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchItem();
     }, [id]);
 
     return (
         <Container className='mt-4'>
-            {item ? <ItemDetail item={item} /> : <>Loading..</>}
-        </Container>);
-}
+            {loading && <p>Loading...</p>}
+            {error && <p>{error}</p>}
+            {item && <ItemDetail item={item} />}
+        </Container>
+    );
+};

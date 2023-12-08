@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Container, Table, Button } from "react-bootstrap";
 
 import { CartContext } from "../contexts/CartContext";
@@ -9,7 +9,10 @@ export const Cart = () => {
     const navigate = useNavigate();
 
     const total = items.reduce((acum, valorAct) => acum + valorAct.quantity * valorAct.price, 0);
-    setTotal(total);
+
+    useEffect(() => {
+        setTotal(total);
+    }, [total, setTotal]);
 
     if (!items.length) {
         return (
