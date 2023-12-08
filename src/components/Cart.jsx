@@ -18,7 +18,7 @@ export const Cart = () => {
         return (
             <Container className="mt-4 text-center align-middle fs-4">
                 <h2>El carrito esta Vacio</h2>
-                <Button className="mt-4 fs-3"  variant="dark" onClick={() => navigate("/")}>Volver a Home</Button>
+                <Button className="mt-4 fs-3" variant="dark" onClick={() => navigate("/")}>Volver a Home</Button>
             </Container>
         )
     }
@@ -58,7 +58,7 @@ export const Cart = () => {
                 </tfoot>
             </Table>
             <div className="d-flex justify-content-center gap-5">
-                <Button variant="dark" onClick={clear}  className="mt-4 fs-4">Vaciar Carrito</Button>
+                <Button variant="dark" onClick={clear} className="mt-4 fs-4">Vaciar Carrito</Button>
                 <Button variant="dark" onClick={() => navigate("/CheckOut")} className="mt-4 fs-4">Comprar</Button>
             </div>
         </Container>

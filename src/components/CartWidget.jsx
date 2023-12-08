@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 import Carrito from "../assets/cart.png";
 
 export const CartWidget = () => {
-    const {items} = useContext (CartContext);
+    const { items } = useContext(CartContext);
 
-    const total = items.reduce ((acum, valorAct) => acum + valorAct.quantity ,0);
+    const total = items.reduce((acum, valorAct) => acum + valorAct.quantity, 0);
 
     return (
         <Link to="/cart">

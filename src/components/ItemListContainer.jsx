@@ -17,7 +17,7 @@ export const ItemListContainer = () => {
 
         const refCollection = !id
             ? collection(db, "items")
-            : query (collection(db, "items"), where("categoryId", "==", id));
+            : query(collection(db, "items"), where("categoryId", "==", id));
 
         getDocs(refCollection).then((snapshot) => {
             if (snapshot.size === 0) console.log("no results");

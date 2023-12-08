@@ -6,7 +6,7 @@ import { ItemCounter } from './ItemCounter';
 import { CartContext } from '../contexts/CartContext';
 
 export const ItemDetail = ({ item }) => {
-    const {onAdd} = useContext(CartContext);
+    const { onAdd } = useContext(CartContext);
 
     const add = (quantity) => {
         onAdd(item, quantity);
@@ -19,7 +19,7 @@ export const ItemDetail = ({ item }) => {
                 <Badge className='fs-3' bg="dark">${item.price}.-</Badge>
                 <Badge className='fs-3' bg="dark">Stock:{item.stock}</Badge>
             </div>
-            
+
             <Card>
                 <Card.Img variant="top" src={item.pictureUrl} alt={item.alt} />
                 <Card.Body>
